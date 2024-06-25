@@ -11,12 +11,12 @@ Or yuo can also use the keyboard shortcut (`Alt+W W`).
 
 The plugin also offers the special command for certain situations:
 
- command                                  | description     | keybinding
-:-----------------------------------------|:----------------|:---------------------:
- `CodeWrapper.wrapTextWithSingleQuotes`   | single quotes   | `` Alt+W ' ``/`` ' ``
- `CodeWrapper.wrapTextWithDoubleQuotes`   | double quotes   | `` Alt+W " ``/`` " ``
- `CodeWrapper.wrapTextWithBackticks`      | backticks       | `` Alt+W ` ``/`` ` ``
- `CodeWrapper.wrapTextWithRoundBrackets`  | round brackets  | `` Alt+W ( ``/`` ( ``
- `CodeWrapper.wrapTextWithSquareBrackets` | square brackets | `` Alt+W [ ``/`` [ ``
- `CodeWrapper.wrapTextWithCurlyBrackets`  | curly brackets  | `` Alt+W { ``/`` { ``
- `CodeWrapper.wrapTextWithTag`            | HTML or XML tag | `` Alt+W T ``
+ command                                  | description     | keybinding            | keybinding (Mac)
+:-----------------------------------------|:----------------|:---------------------:|:------------------------:
+ `CodeWrapper.wrapTextWithSingleQuotes`   | single quotes   | `` Alt+W ' ``/`` ' `` | `` Option+W ' ``/`` ' ``
+ `CodeWrapper.wrapTextWithDoubleQuotes`   | double quotes   | `` Alt+W " ``/`` " `` | `` Option+W " ``/`` " ``
+ `CodeWrapper.wrapTextWithBackticks`      | backticks       | `` Alt+W ` ``/`` ` `` | `` Option+W ` ``/`` ` ``
+ `CodeWrapper.wrapTextWithRoundBrackets`  | round brackets  | `` Alt+W ( ``/`` ( `` | `` Option+W ( ``/`` ( ``
+ `CodeWrapper.wrapTextWithSquareBrackets` | square brackets | `` Alt+W [ ``/`` [ `` | `` Option+W [ ``/`` [ ``
+ `CodeWrapper.wrapTextWithCurlyBrackets`  | curly brackets  | `` Alt+W { ``/`` { `` | `` Option+W { ``/`` { ``
+ `CodeWrapper.wrapTextWithTag`            | HTML or XML tag | `` Alt+W T ``         | `` Option+W T ``

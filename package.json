@@ -2,7 +2,7 @@
   "name": "code-wrapper-vscode-plugin",
   "displayName": "Code Wrapper",
   "version": "0.1.0",
-  "description": "",
+  "description": "This plugin can be used to wrap your code",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -47,41 +47,49 @@
       {
         "command": "CodeWrapper.wrapText",
         "key": "alt+w w",
+        "mac": "option+w w",
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       },
       {
         "command": "CodeWrapper.wrapTextWithSingleQuotes",
         "key": "alt+w '",
+        "mac": "option+w '",
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       },
       {
         "command": "CodeWrapper.wrapTextWithDoubleQuotes",
         "key": "alt+w shift+'",
+        "mac": "option+w shift+'",
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       },
       {
         "command": "CodeWrapper.wrapTextWithBackticks",
         "key": "alt+w `",
+        "mac": "option+w `",
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       },
       {
         "command": "CodeWrapper.wrapTextWithRoundBrackets",
         "key": "alt+w (",
+        "mac": "option+w (",
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       },
       {
         "command": "CodeWrapper.wrapTextWithSquareBrackets",
         "key": "alt+w [",
+        "mac": "option+w [",
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       },
       {
         "command": "CodeWrapper.wrapTextWithCurlyBrackets",
         "key": "alt+w shift+{",
+        "mac": "option+w shift+{",
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       },
       {
         "command": "CodeWrapper.wrapTextWithTag",
         "key": "alt+w t",
+        "mac": "option+w t",
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       },
       {
