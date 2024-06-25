@@ -1,0 +1,144 @@
+{
+  "name": "code-wrapper-vscode-plugin",
+  "displayName": "Code Wrapper",
+  "version": "0.1.0",
+  "description": "",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "type": "commonjs",
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "CodeWrapper.wrapText",
+        "title": "Wrap text"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithSingleQuotes",
+        "title": "Wrap text with single quotes"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithDoubleQuotes",
+        "title": "Wrap text with double quotes"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithBackticks",
+        "title": "Wrap text with backticks"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithRoundBrackets",
+        "title": "Wrap text with round brackets"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithSquareBrackets",
+        "title": "Wrap text with square brackets"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithCurlyBrackets",
+        "title": "Wrap text with curly brackets"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithTag",
+        "title": "Wrap text with tag"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "CodeWrapper.wrapText",
+        "key": "alt+w w",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithSingleQuotes",
+        "key": "alt+w '",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithDoubleQuotes",
+        "key": "alt+w shift+'",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithBackticks",
+        "key": "alt+w `",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithRoundBrackets",
+        "key": "alt+w (",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithSquareBrackets",
+        "key": "alt+w [",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithCurlyBrackets",
+        "key": "alt+w shift+{",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithTag",
+        "key": "alt+w t",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithSingleQuotes",
+        "key": "'",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithDoubleQuotes",
+        "key": "shift+'",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithBackticks",
+        "key": "`",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithRoundBrackets",
+        "key": "shift+9",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithSquareBrackets",
+        "key": "[",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithCurlyBrackets",
+        "key": "shift+[",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      }
+    ]
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "scripts": {
+    "dev": "nodemon ./scripts/esbuild-dev.js --ignore src --ignore dist --ignore ./*.js",
+    "package": "esbuild --bundle --platform=node --format=cjs --minify --outdir=dist --external:vscode ./src/extension.ts && vsce package -o dist/code-wrapper-vscode-plugin.vsix"
+  },
+  "keywords": [
+    "Formatters",
+    "Keymaps",
+    "Other"
+  ],
+  "author": "Lengyue57",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lengyue57/code-wrapper-vscode-plugin.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@types/vscode": "^1.90.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.5",
+    "nodemon": "^3.1.4"
+  }
+}
