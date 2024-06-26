@@ -3,9 +3,19 @@ import * as vscode from 'vscode';
 
 const messages = {
   unselection: "Currently not selected",
+  document_type_unsupported: "This document type is unsupported",
 }
 
 export function activate(context: vscode.ExtensionContext) {
+  const configration = vscode.workspace.getConfiguration("CodeWrapper");
+  const html_tag_support_type = configration.get("htmlTagSupportType", [
+    "html",
+    "jsx",
+    "tsx",
+    "vue"
+  ]) as string[];
+  const tag_support_type = configration.get("tagSupportType", []) as string[];
+
   context.subscriptions.push(
     ...[
       "CodeWrapper.wrapTextWithSingleQuotes",
@@ -14,10 +24,11 @@ export function activate(context: vscode.ExtensionContext) {
       "CodeWrapper.wrapTextWithRoundBrackets",
       "CodeWrapper.wrapTextWithSquareBrackets",
       "CodeWrapper.wrapTextWithCurlyBrackets",
+      "CodeWrapper.wrapTextWithAngleBrackets"
     ].map((command, index) => vscode.commands.registerTextEditorCommand(
       command,
       async(editor) => {
-        const character_map = ["'", "\"", "`", "(", "[", "{"];
+        const character_map = ["'", "\"", "`", "(", "[", "{", "<"];
 
         if (!HasSelection(editor)) {
           vscode.window.showWarningMessage(messages.unselection);
@@ -64,12 +75,16 @@ export function activate(context: vscode.ExtensionContext) {
         const { document } = editor;
         let snippet_str = "";
 
-        if (["html", "xml", "jsx", "tsx"].includes(document.languageId)) {
+        if (html_tag_support_type.includes(document.languageId)) {
           snippet_str = `<\${1:div} class="\$2"\$3>\$0</\${1:div}>`;
-        } else if (document.languageId === "xml" || document.isUntitled) {
+        } else if (
+          tag_support_type.length === 0 ||
+          tag_support_type.includes(document.languageId) ||
+          document.isUntitled
+        ) {
           snippet_str = `<\${1:tag} \${2:attr}="\$3"\$4}>\$0</\${1:tag}>`;
         } else {
-          vscode.window.showWarningMessage("This document type is unsupported");
+          vscode.window.showWarningMessage(messages.document_type_unsupported);
           return;
         }
 

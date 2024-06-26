@@ -9,6 +9,26 @@
   "type": "commonjs",
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Code Wrapper",
+      "properties": {
+        "CodeWrapper.tagSupportType": {
+          "type": "array",
+          "description": "The document types that support wrapping with tags, leave it empty to support all types",
+          "default": []
+        },
+        "CodeWrapper.htmlTagSupportType": {
+          "type": "array",
+          "description": "The document types that support wrapping with HTML tags",
+          "default": [
+            "html",
+            "jsx",
+            "tsx",
+            "vue"
+          ]
+        }
+      }
+    },
     "commands": [
       {
         "command": "CodeWrapper.wrapText",
@@ -139,9 +159,7 @@
       }
     ]
   },
-  "activationEvents": [
-    "onStartupFinished"
-  ],
+  "activationEvents": [],
   "scripts": {
     "dev": "nodemon ./scripts/esbuild-dev.js --ignore src --ignore dist --ignore ./*.js",
     "package": "esbuild --bundle --platform=node --format=cjs --minify --outdir=dist --external:vscode ./src/extension.ts && vsce package -o dist/code-wrapper-vscode-plugin.vsix"
