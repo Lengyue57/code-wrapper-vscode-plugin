@@ -2,6 +2,8 @@
 
 This plugin can be wrap your code with a customizable text.
 
+The idea for make this plugin came from [Wrap Selection](https://marketplace.visualstudio.com/items?itemName=konstantin.wrapSelection)
+
 ## How to use
 
 1. Open the command palette (`Ctrl+Shift+P`) and select "Code Wrapper: Wrap Text".
@@ -20,3 +22,7 @@ The plugin also offers the special command for certain situations:
  `CodeWrapper.wrapTextWithSquareBrackets` | square brackets | `` Alt+W [ ``/`` [ `` | `` Option+W [ ``/`` [ ``
  `CodeWrapper.wrapTextWithCurlyBrackets`  | curly brackets  | `` Alt+W { ``/`` { `` | `` Option+W { ``/`` { ``
  `CodeWrapper.wrapTextWithTag`            | HTML or XML tag | `` Alt+W T ``         | `` Option+W T ``
+
+## Expectations
+
+1. Add `CodeWrapper.wrapTextWithSnippet` command.
