@@ -125,15 +125,14 @@ function WrapSelections(
   snippet_str: string,
 ) {
   const { document, selections } = editor;
+  const snippet_edits = [] as vscode.SnippetTextEdit[];
 
   for (const selection of selections) {
     if (selection.isEmpty)
       continue;
 
-    const workspace_edit = new vscode.WorkspaceEdit();
     let wrap_range = selection as vscode.Range;
-    let wrap_text = document.getText(wrap_range);
-
+    let context = document.getText(wrap_range);
 
     if (!selection.isSingleLine) {
       // 多行选择
@@ -162,7 +161,7 @@ function WrapSelections(
         );
       }
 
-      wrap_text = document.getText(wrap_range).split(/\n\r?/)
+      context = document.getText(wrap_range).split(/\n\r?/)
         .map((line, idx) => {
           if (idx === 0)
             return line;
@@ -175,11 +174,13 @@ function WrapSelections(
 
     const snippet = new vscode.SnippetString(snippet_str.replace(
       "$0",
-      `\${0:${wrap_text.replace("$0", "\\$0")}}`
+      `\${0:${context.replace("$0", "\\$0")}}`
     ));
-    const snippet_edit = new vscode.SnippetTextEdit(wrap_range, snippet);
 
-    workspace_edit.set(document.uri, [snippet_edit]);
-    vscode.workspace.applyEdit(workspace_edit);
+    snippet_edits.push(new vscode.SnippetTextEdit(wrap_range, snippet));
   }
+
+  const workspace_edit = new vscode.WorkspaceEdit();
+  workspace_edit.set(document.uri, snippet_edits);
+  vscode.workspace.applyEdit(workspace_edit);
 }
