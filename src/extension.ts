@@ -17,25 +17,23 @@ export function activate(context: vscode.ExtensionContext) {
   const tag_support_type = configration.get("tagSupportType", []) as string[];
 
   context.subscriptions.push(
-    ...[
-      "CodeWrapper.wrapTextWithSingleQuotes",
-      "CodeWrapper.wrapTextWithDoubleQuotes",
-      "CodeWrapper.wrapTextWithBackticks",
-      "CodeWrapper.wrapTextWithRoundBrackets",
-      "CodeWrapper.wrapTextWithSquareBrackets",
-      "CodeWrapper.wrapTextWithCurlyBrackets",
-      "CodeWrapper.wrapTextWithAngleBrackets"
-    ].map((command, index) => vscode.commands.registerTextEditorCommand(
-      command,
+    ...Object.entries({
+      SingleQuotes:   "'",
+      DoubleQuotes:   "\"",
+      Backticks:      "`",
+      RoundBrackets:  "(",
+      SquareBrackets: "[",
+      CurlyBrackets:  "{",
+      AngleBrackets:  "<",
+    }).map(([command, char]) => vscode.commands.registerTextEditorCommand(
+      "CodeWrapper.wrapTextWith" + command,
       async(editor) => {
-        const character_map = ["'", "\"", "`", "(", "[", "{", "<"];
-
         if (!HasSelection(editor)) {
           vscode.window.showWarningMessage(messages.unselection);
           return;
         }
 
-        WrapSelections(editor, `${character_map[index]}\$0${OverturnCharacter(character_map[index])}`);
+        WrapSelections(editor, `${char}\$0${OverturnCharacter(char)}`);
       }
     )),
 
