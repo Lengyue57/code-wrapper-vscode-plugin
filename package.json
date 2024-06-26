@@ -39,6 +39,10 @@
         "title": "Wrap text with curly brackets"
       },
       {
+        "command": "CodeWrapper.wrapTextWithAngleBrackets",
+        "title": "Wrap text with angle brackets"
+      },
+      {
         "command": "CodeWrapper.wrapTextWithTag",
         "title": "Wrap text with tag"
       }
@@ -87,6 +91,12 @@
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       },
       {
+        "command": "CodeWrapper.wrapTextWithAngleBrackets",
+        "key": "alt+w shift+,",
+        "mac": "option+w shift+,",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
         "command": "CodeWrapper.wrapTextWithTag",
         "key": "alt+w t",
         "mac": "option+w t",
@@ -120,6 +130,11 @@
       {
         "command": "CodeWrapper.wrapTextWithCurlyBrackets",
         "key": "shift+[",
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+      },
+      {
+        "command": "CodeWrapper.wrapTextWithAngleBrackets",
+        "key": "shift+,",
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       }
     ]
