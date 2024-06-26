@@ -70,6 +70,7 @@ export function activate(context: vscode.ExtensionContext) {
           snippet_str = `<\${1:tag} \${2:attr}="\$3"\$4}>\$0</\${1:tag}>`;
         } else {
           vscode.window.showWarningMessage("This document type is unsupported");
+          return;
         }
 
         if (!HasSelection(editor)) {
@@ -130,6 +131,7 @@ function WrapSelections(
       // 判断开始光标的位置
       if (selection.start.character === start_line.text.length) {
         // 光标在行尾
+        // The cursor is at the end of the line
 
         const wrap_start_line = document.lineAt(selection.start.line + 1);
 
@@ -139,6 +141,7 @@ function WrapSelections(
         );
       } else if (selection.start.character < start_line.firstNonWhitespaceCharacterIndex) {
         // 光标在行首
+        // The cursor is at the beginning of the line
 
         wrap_range = new vscode.Range(
           start_line.lineNumber, start_line.firstNonWhitespaceCharacterIndex,
