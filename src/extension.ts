@@ -173,12 +173,13 @@ function WrapSelections(
     }
 
     const snippet = new vscode.SnippetString(snippet_str.replace(
-      "$0",
-      `\${0:${context.replace("$0", "\\$0")}}`
+      /\$0|\$\{0([^}]|(?<=\\\\)\})*\}/,
+      `\${0:${context.replace(/\\/g, "\\\\").replace(/([$}])/g, "\\$1")}}`
     ));
 
     snippet_edits.push(new vscode.SnippetTextEdit(wrap_range, snippet));
   }
+
 
   const workspace_edit = new vscode.WorkspaceEdit();
   workspace_edit.set(document.uri, snippet_edits);
