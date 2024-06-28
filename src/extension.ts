@@ -105,6 +105,8 @@ function HasSelection({ selections }: vscode.TextEditor) {
   return selections.length > 0 && !selections.every((sel) => sel.isEmpty);
 }
 
+const match_$0 = /\$0|\$\{0([^}]|(?<=\\\\)\})*\}/;
+
 function OverturnCharacter(char: string) {
   const char_overturn_table: { [key: string]: string | undefined } = {
     "(": ")",
@@ -132,15 +134,23 @@ function WrapSelections(
       continue;
 
     let wrap_range = selection as vscode.Range;
-    let context = document.getText(wrap_range);
+    let actual_snippet_str = snippet_str;
+    let inner_text = document.getText(wrap_range).replace(/\\/g, "\\\\")
+      .replace(/([$}])/g, "\\$1");
 
-    if (!selection.isSingleLine) {
-      // 多行选择
-      // Multi-line selection
+    if (selection.isSingleLine) {
+      const snippet = new vscode.SnippetString(
+        actual_snippet_str.replace("\$0", `\${0:${inner_text}}`)
+      );
+
+      snippet_edits.push(new vscode.SnippetTextEdit(wrap_range, snippet));
+
+      continue;
+    }
+
 
       const start_line = document.lineAt(selection.start);
 
-      // 判断开始光标的位置
       if (selection.start.character === start_line.text.length) {
         // 光标在行尾
         // The cursor is at the end of the line
@@ -148,34 +158,33 @@ function WrapSelections(
         const wrap_start_line = document.lineAt(selection.start.line + 1);
 
         wrap_range = new vscode.Range(
-          wrap_start_line.lineNumber, wrap_start_line.firstNonWhitespaceCharacterIndex,
-          selection.end.line, selection.end.character
+        wrap_start_line.lineNumber,
+        wrap_start_line.firstNonWhitespaceCharacterIndex,
+        selection.end.line,
+        selection.end.character
         );
-      } else if (selection.start.character < start_line.firstNonWhitespaceCharacterIndex) {
+    } else if (
+      selection.start.character < start_line.firstNonWhitespaceCharacterIndex
+    ) {
         // 光标在行首
         // The cursor is at the beginning of the line
 
         wrap_range = new vscode.Range(
-          start_line.lineNumber, start_line.firstNonWhitespaceCharacterIndex,
-          selection.end.line, selection.end.character
+        start_line.lineNumber,
+        start_line.firstNonWhitespaceCharacterIndex,
+        selection.end.line,
+        selection.end.character
         );
       }
 
-      context = document.getText(wrap_range).split(/\n\r?/)
-        .map((line, idx) => {
-          if (idx === 0)
-            return line;
+    inner_text = document.getText(wrap_range).split(/\n\r?/)
+      .reduce((prev_line, curr_line) => prev_line + "\n\t" + curr_line);
 
-          return "\t" + line;
-        }).join("\n");
+    actual_snippet_str = snippet_str.replace(match_$0, "\n\t\$0\n");
 
-      snippet_str = snippet_str.replace("$0", "\n\t\$0\n");
-    }
-
-    const snippet = new vscode.SnippetString(snippet_str.replace(
-      /\$0|\$\{0([^}]|(?<=\\\\)\})*\}/,
-      `\${0:${context.replace(/\\/g, "\\\\").replace(/([$}])/g, "\\$1")}}`
-    ));
+    const snippet = new vscode.SnippetString(
+      actual_snippet_str.replace("\$0", `\${0:${inner_text}}`)
+    );
 
     snippet_edits.push(new vscode.SnippetTextEdit(wrap_range, snippet));
   }
