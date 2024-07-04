@@ -101,8 +101,8 @@ export function activate(context: vscode.ExtensionContext) {
   );
 };
 
-function HasAsciiPunctuation(char: string) {
-  return /[\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E]/.test(char);
+function HasAsciiPunctuation(str: string) {
+  return /[\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E]/.test(str);
 }
 
 function HasSelection({ selections }: vscode.TextEditor) {
@@ -133,64 +133,61 @@ function WrapSelections(
   const { document, selections } = editor;
   const snippet_edits = [] as SnippetTextEdit[];
 
+  snippet_str = snippet_str.replace(match_$0, "\$0");
+
   for (const selection of selections) {
     if (selection.isEmpty)
       continue;
 
     let wrap_range = selection as vscode.Range;
-    let actual_snippet_str = snippet_str.replace(match_$0, "\$0");
-    let inner_text = document.getText(wrap_range).replace(/\\/g, "\\\\")
-      .replace(/([$}])/g, "\\$1");
+    let actual_snippet_str = snippet_str;
+    let inner_text = document.getText(wrap_range);
 
-    if (selection.isSingleLine) {
-      const snippet = new SnippetString(
+
+    if (!wrap_range.isSingleLine) {
+      const start_line = document.lineAt(wrap_range.start);
+      let wrap_start: vscode.Position | undefined;
+
+      if (wrap_range.start.character === start_line.text.length) {
+        // 光标在行尾
+        // The cursor is at the end of the line
+
+        const start_line = document.lineAt(wrap_range.start.line + 1);
+
+        wrap_start = new vscode.Position(
+          start_line.lineNumber,
+          start_line.firstNonWhitespaceCharacterIndex
+        );
+      } else if (
+        wrap_range.start.character < start_line.firstNonWhitespaceCharacterIndex
+      ) {
+        // 光标在行首
+        // The cursor is at the beginning of the line
+
+        wrap_start = new vscode.Position(
+          start_line.lineNumber,
+          start_line.firstNonWhitespaceCharacterIndex
+        );
+      }
+
+      wrap_range = wrap_range.with({ start: wrap_start });
+
+      inner_text = document.getText(wrap_range).split(/\n\r?/)
+        .reduce((prev_line, curr_line) => prev_line + "\n\t" + curr_line)
+
+      actual_snippet_str = snippet_str.replace("\$0", "\n\t\$0\n");
+    }
+
+    // 处理特殊字符
+    // Handle special characters
+    inner_text = inner_text.replace(/([\\$}])/g, "\\$1");
+
+    snippet_edits.push(new SnippetTextEdit(
+      wrap_range,
+      new SnippetString(
         actual_snippet_str.replace("\$0", `\${0:${inner_text}}`)
-      );
-
-      snippet_edits.push(new SnippetTextEdit(wrap_range, snippet));
-
-      continue;
-    }
-
-
-    const start_line = document.lineAt(selection.start);
-
-    if (selection.start.character === start_line.text.length) {
-      // 光标在行尾
-      // The cursor is at the end of the line
-
-      const wrap_start_line = document.lineAt(selection.start.line + 1);
-
-      wrap_range = new vscode.Range(
-        wrap_start_line.lineNumber,
-        wrap_start_line.firstNonWhitespaceCharacterIndex,
-        selection.end.line,
-        selection.end.character
-      );
-    } else if (
-      selection.start.character < start_line.firstNonWhitespaceCharacterIndex
-    ) {
-      // 光标在行首
-      // The cursor is at the beginning of the line
-
-      wrap_range = new vscode.Range(
-        start_line.lineNumber,
-        start_line.firstNonWhitespaceCharacterIndex,
-        selection.end.line,
-        selection.end.character
-      );
-    }
-
-    inner_text = document.getText(wrap_range).split(/\n\r?/)
-      .reduce((prev_line, curr_line) => prev_line + "\n\t" + curr_line);
-
-    actual_snippet_str = snippet_str.replace("\$0", "\n\t\$0\n");
-
-    const snippet = new SnippetString(
-      actual_snippet_str.replace("\$0", `\${0:${inner_text}}`)
-    );
-
-    snippet_edits.push(new SnippetTextEdit(wrap_range, snippet));
+      )
+    ));
   }
 
 
