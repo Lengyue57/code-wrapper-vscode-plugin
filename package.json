@@ -162,7 +162,8 @@
   "activationEvents": [],
   "scripts": {
     "dev": "nodemon ./scripts/esbuild-dev.js --ignore src --ignore dist --ignore ./*.js",
-    "package": "esbuild --bundle --platform=node --format=cjs --minify --outdir=dist --external:vscode ./src/extension.ts && vsce package -o dist/code-wrapper-vscode-plugin.vsix"
+    "build": "node ./scripts/esbuild-build.js",
+    "package": "npm run build && vsce package -o dist/code-wrapper-vscode-plugin.vsix"
   },
   "keywords": [
     "Formatters",
