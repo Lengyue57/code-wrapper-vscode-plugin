@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "This plugin can be used to wrap your code",
   "engines": {
-    "vscode": "^1.80.0"
+    "vscode": "^1.72.0"
   },
   "type": "commonjs",
   "main": "./dist/extension.js",
@@ -177,7 +177,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/vscode": "^1.90.0",
+    "@types/vscode": "1.72",
     "esbuild": "^0.23.0",
     "nodemon": "^3.1.4"
   }
