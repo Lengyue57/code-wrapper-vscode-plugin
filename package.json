@@ -94,8 +94,8 @@
       },
       {
         "command": "CodeWrapper.wrapTextWithRoundBrackets",
-        "key": "alt+w (",
-        "mac": "option+w (",
+        "key": "alt+w shift+9",
+        "mac": "option+w shift+9",
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       },
       {
@@ -106,8 +106,8 @@
       },
       {
         "command": "CodeWrapper.wrapTextWithCurlyBrackets",
-        "key": "alt+w shift+{",
-        "mac": "option+w shift+{",
+        "key": "alt+w shift+[",
+        "mac": "option+w shift+[",
         "when": "editorTextFocus && !editorReadonly && editorHasSelection"
       },
       {
